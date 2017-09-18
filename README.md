@@ -1,4 +1,4 @@
-# liquid-loader
+# Liquid Loader
 
 Liquid template engine for Webpack loader.
 
@@ -86,3 +86,11 @@ module.exports = {
 </body>
 </html>
 ```
+
+## Dependencies
+- https://github.com/webpack-contrib/html-loader
+- https://github.com/sirlantis/liquid-node
+
+## License
+
+Liquid Loader is released under the [MIT license](http://www.opensource.org/licenses/MIT).
