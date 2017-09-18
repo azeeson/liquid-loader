@@ -1,0 +1,28 @@
+{
+	"name": "liquid-loader",
+	"author": "Alexander Medkov <azeeson@gmail.com>",
+	"description": "Liquid template engine for Webpack loader.",
+	"version": "0.1.0",
+	"license": "MIT",
+	"homepage": "https://github.com/azeeson/liquid-loader",
+	"bugs": "https://github.com/azeeson/liquid-loader/issues",
+	"repository": {
+	  "type": "git",
+	  "url": "git://github.com/azeeson/liquid-loader.git"
+	},
+	"keywords": [
+	  "liquid",
+	  "template",
+	  "loader",
+	  "webpack"
+	],
+	"main": "index.js",
+	"engines": {
+	  "node": ">=4"
+	},
+	"dependencies": {
+	  "liquid-node": "^3.0",
+	  "loader-utils": "^1.0.2",
+	  "object-assign": "^4.1.0"
+	}
+}
