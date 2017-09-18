@@ -12,7 +12,7 @@ npm install --save-dev liquid-loader
 
 ## Usage
 
-```
+```js
 // webpack.config.js 
 module.exports = {
     ...
@@ -38,7 +38,7 @@ module.exports = {
 
 ## Examples
 
-```
+```js
 // webpack.config.js 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -69,7 +69,7 @@ module.exports = {
 };
 ```
 
-```
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
