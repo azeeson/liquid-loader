@@ -38,8 +38,8 @@ module.exports = {
 
 ## Examples
 
-```js
-// webpack.config.js 
+**webpack.config.js**
+```js 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -69,6 +69,7 @@ module.exports = {
 };
 ```
 
+**src/index.html**
 ```html
 <!DOCTYPE html>
 <html lang="ru">
