@@ -29,6 +29,9 @@ module.exports = function(content) {
 	}
 
 	Engine.registerFileSystem(new Liquid.LocalFileSystem(root));
+	if (typeof config.filters === 'object') {
+		Engine.registerFilters(config.filters);
+	}
 	return Engine.parseAndRender(content, config.data || {}).then(function(
 		result
 	) {
