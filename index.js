@@ -3,6 +3,7 @@ var assign = require("object-assign");
 var Liquid = require("liquid-node");
 var Engine = new Liquid.Engine();
 var Path = require("path");
+var fs = require("fs");
 
 function getLoaderConfig(context) {
 	var query = loaderUtils.getOptions(context) || {};
@@ -32,7 +33,26 @@ module.exports = function(content) {
 	if (typeof config.filters === 'object') {
 		Engine.registerFilters(config.filters);
 	}
-	return Engine.parseAndRender(content, config.data || {}).then(function(
+
+	// Get template data from data-file of loader options
+	let templateData = {};
+
+	if (config.data) {
+		templateData = config.data;
+	} else {
+		const dataPath = config.dataPath;
+		const processedFile = Path.basename(this.resourcePath);
+		const liquidDataFilePath = Path.join(root, dataPath, `${processedFile}.json`)
+		const liquidData = fs.readFileSync(liquidDataFilePath, { encoding: "utf8" });
+	  
+		try {
+			templateData = JSON.parse(liquidData);
+		} catch (error) {
+			console.error(`Error parsing data from ${liquidDataFilePath} to JSON, please make sure your data is json compatible.`);
+		}
+	}
+
+	return Engine.parseAndRender(content, templateData).then(function(
 		result
 	) {
 		return callback(null, result);
