@@ -40,7 +40,7 @@ module.exports = function(content) {
 	if (config.data) {
 		templateData = config.data;
 	} else {
-		const dataPath = config.dataPath;
+		const dataPath = config.dataPath || 'data';
 		const processedFile = Path.basename(this.resourcePath);
 		const liquidDataFilePath = Path.join(root, dataPath, `${processedFile}.json`)
 		const liquidData = fs.readFileSync(liquidDataFilePath, { encoding: "utf8" });

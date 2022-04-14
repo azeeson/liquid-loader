@@ -12,10 +12,10 @@ npm install --save-dev liquid-loader
 
 ## Options
 
-| Option   | Example             | Description                                                                                   |
-| -------- | ------------------- | --------------------------------------------------------------------------------------------- |
-| dataPath | 'data'              | String holding a path to the folder which contains your templates data files (\*.liquid.json) |
-| data     | { foo: 'foo value'} | Object with your template data. Useful when you only have one template.                       |
+| Option   | Example             | Default | Description                                                                                   |
+| -------- | ------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| dataPath | 'data'              | 'data'  | String holding a path to the folder which contains your templates data files (\*.liquid.json) |
+| data     | { foo: 'foo value'} | {}      | Object with your template data. Useful when you only have one template.                       |
 
 ## Usage
 
@@ -25,8 +25,13 @@ npm install --save-dev liquid-loader
 
 If you have only one liquid template, you can provide your template data to the loader itself using the `data` option.
 
+**webpack.config.js**
+
 ```js
-// webpack.config.js
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
     ...
     module: {
@@ -38,18 +43,24 @@ module.exports = {
                 loader: "liquid-loader",
                 options: {
                     data: {
-                        // Your variables
+                        dev_evn: NODE_ENV == 'development'
                     }
                 }
             }]
         }]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: __dirname + '/src/index.liquid',
+            filename: 'index.html'
+        })
+    ]
 };
 ```
 
-**src/index.html**
+**src/index.liquid**
 
-```html
+```liquid
 <!DOCTYPE html>
 <html lang="ru">
   <head>
@@ -67,9 +78,10 @@ module.exports = {
 
 ---
 
-If you have multiple templates, you can provide the data to your templates from data files. They must be called the same as the templates of which they have data for but with a `.json` extension.
+If you have multiple templates, you can provide the data to your templates from data files.
+Data files must be called the same as the templates of which they have data for but with a `.json` extension and they must be placed inside the data `dataPath` directory provided in the plugin configuration (`/data` by default).
 
-For example, if your template is named `template-1.liquid`, then your data file must be: `template-1.liquid.json` and would look like this:
+For example, if your template is named `template-1.liquid`, then your data file must be: `./data/template-1.liquid.json` and would look like this:
 
 ```json
 {
