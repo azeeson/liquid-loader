@@ -10,26 +10,22 @@ Liquid Templating language (see http://github.com/shopify/liquid)
 npm install --save-dev liquid-loader
 ```
 
-## Options
+## Loader options
 
-| Option   | Example             | Default | Description                                                                                   |
-| -------- | ------------------- | ------- | --------------------------------------------------------------------------------------------- |
-| dataPath | 'data'              | 'data'  | String holding a path to the folder which contains your templates data files (\*.liquid.json) |
-| data     | { foo: 'foo value'} | {}      | Object with your template data. Useful when you only have one template.                       |
+| Option | Default | Description                                       |
+| ------ | ------- | ------------------------------------------------- |
+| data   | {}      | Object of function that returns the template data |
 
-## Usage
+You can opt between two ways to provide your template data.
 
-### Single template
+## Passing data as an object
 
----
+You can provide your template data to the loader itself using the `data` option.
 
-If you have only one liquid template, you can provide your template data to the loader itself using the `data` option.
-
-**webpack.config.js**
+On your **webpack.config.js**:
 
 ```js
 const NODE_ENV = process.env.NODE_ENV || 'development';
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -58,42 +54,60 @@ module.exports = {
 };
 ```
 
-**src/index.liquid**
+On your **src/index.liquid**:
 
 ```liquid
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <title>Document</title>
-  </head>
+  ...
   <body>
     {% if dev_evn %} Section for development {% else %} Section for production
     {% endif %}
   </body>
-</html>
+  ...
 ```
 
-### Multiple templates
+## Passing data as a Function
 
----
+Another way is to pass a `function` in the `data` option.
+This function must return an object containing the data for the template. This way, you you can provide different data to each template.
 
-If you have multiple templates, you can provide the data to your templates from data files.
-Data files must be called the same as the templates of which they have data for but with a `.json` extension and they must be placed inside the data `dataPath` directory provided in the plugin configuration (`/data` by default).
+Function arguments
 
-For example, if your template is named `template-1.liquid`, then your data file must be: `./data/template-1.liquid.json` and would look like this:
+| Argument | Type   | Properties   | Description                                           |
+| -------- | ------ | ------------ | ----------------------------------------------------- |
+| resource | object | resourcePath | String containing the current processed template path |
 
-```json
-{
-  "foo": "foo value"
-}
+On your **webpack.config.js**:
+
+```js
+module.exports = {
+    ...
+    module: {
+        rules: [{
+            test: /\.liquid$/,
+            use: [{
+                loader: "html-loader"
+            }, {
+                loader: "liquid-loader",
+                options: {
+                    data: ({ resourcePath }) => {
+                        const myTemplateData = /* Get my template data based on the resourcePath (see examples below) */
+                        return myTemplateData;
+                    }
+                }
+            }]
+        }]
+    },
+    ...
+};
 ```
 
 ## Examples
 
-### Take a look at the examples folder for mor detailed examples
+### Take a look at the examples folder for more detailed examples
 
-- https://github.com/azeeson/liquid-loader/tree/master/examples
+- [Single template (data object)](https://github.com/azeeson/liquid-loader/tree/master/examples/data-object)
+
+- [Multiple templaes (data function)](https://github.com/azeeson/liquid-loader/tree/master/examples/data-function)
 
 ## Dependencies
 

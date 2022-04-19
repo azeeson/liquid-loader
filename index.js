@@ -16,6 +16,10 @@ function getLoaderConfig(context) {
 	return assign(query, config);
 }
 
+function isFunction(arg) {
+	return typeof(arg) === 'function';
+}
+
 module.exports = function(content) {
 	if (this.cacheable) this.cacheable();
 
@@ -34,22 +38,16 @@ module.exports = function(content) {
 		Engine.registerFilters(config.filters);
 	}
 
-	// Get template data from data-file of loader options
 	let templateData = {};
 
-	if (config.data) {
-		templateData = config.data;
-	} else {
-		const dataPath = config.dataPath || 'data';
-		const processedFile = Path.basename(this.resourcePath);
-		const liquidDataFilePath = Path.join(root, dataPath, `${processedFile}.json`)
-		const liquidData = fs.readFileSync(liquidDataFilePath, { encoding: "utf8" });
-	  
+	if (isFunction(config.data)) {
 		try {
-			templateData = JSON.parse(liquidData);
+			templateData = config.data({ resourcePath: this.resourcePath });
 		} catch (error) {
-			console.error(`Error parsing data from ${liquidDataFilePath} to JSON, please make sure your data is json compatible.`);
+			return callback(error);
 		}
+	} else {
+		templateData = config.data;
 	}
 
 	return Engine.parseAndRender(content, templateData).then(function(
