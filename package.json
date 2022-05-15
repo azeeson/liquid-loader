@@ -2,7 +2,7 @@
 	"name": "liquid-loader",
 	"author": "Alexander Medkov <azeeson@gmail.com>",
 	"description": "Liquid template engine for Webpack loader.",
-	"version": "0.1.4",
+	"version": "1.0.0",
 	"license": "MIT",
 	"homepage": "https://github.com/azeeson/liquid-loader",
 	"bugs": "https://github.com/azeeson/liquid-loader/issues",

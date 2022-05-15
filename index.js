@@ -3,6 +3,7 @@ var assign = require("object-assign");
 var Liquid = require("liquid-node");
 var Engine = new Liquid.Engine();
 var Path = require("path");
+var fs = require("fs");
 
 function getLoaderConfig(context) {
 	var query = loaderUtils.getOptions(context) || {};
@@ -13,6 +14,10 @@ function getLoaderConfig(context) {
 			: {};
 	delete query.config;
 	return assign(query, config);
+}
+
+function isFunction(arg) {
+	return typeof(arg) === 'function';
 }
 
 module.exports = function(content) {
@@ -32,7 +37,20 @@ module.exports = function(content) {
 	if (typeof config.filters === 'object') {
 		Engine.registerFilters(config.filters);
 	}
-	return Engine.parseAndRender(content, config.data || {}).then(function(
+
+	let templateData = {};
+
+	if (isFunction(config.data)) {
+		try {
+			templateData = config.data({ resourcePath: this.resourcePath });
+		} catch (error) {
+			return callback(error);
+		}
+	} else {
+		templateData = config.data;
+	}
+
+	return Engine.parseAndRender(content, templateData).then(function(
 		result
 	) {
 		return callback(null, result);

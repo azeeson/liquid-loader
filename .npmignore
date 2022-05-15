@@ -2,3 +2,4 @@ test/
 demo
 .DS_Store
 npm-debug.log
+examples/
