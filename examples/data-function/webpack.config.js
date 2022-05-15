@@ -28,7 +28,7 @@ const multipleHtmlPlugins = liquidTemplates.map((templateFileName) => {
  * @param {*} resourcePath The pathname of the processed liquid template.
  * @returns The JSON data for that template
  */
-const getTemplateData = ({ resourcePath }) => {
+const getTemplateData = (resourcePath) => {
   const processedFile = path.basename(resourcePath);
   const tempalateData = require(`./data/${processedFile}.json`);
   return tempalateData;

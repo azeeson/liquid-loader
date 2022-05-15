@@ -3,7 +3,6 @@ var assign = require("object-assign");
 var Liquid = require("liquid-node");
 var Engine = new Liquid.Engine();
 var Path = require("path");
-var fs = require("fs");
 
 function getLoaderConfig(context) {
 	var query = loaderUtils.getOptions(context) || {};
@@ -42,7 +41,7 @@ module.exports = function(content) {
 
 	if (isFunction(config.data)) {
 		try {
-			templateData = config.data({ resourcePath: this.resourcePath });
+			templateData = config.data(this.resourcePath);
 		} catch (error) {
 			return callback(error);
 		}

@@ -89,7 +89,7 @@ module.exports = {
             }, {
                 loader: "liquid-loader",
                 options: {
-                    data: ({ resourcePath }) => {
+                    data: (resourcePath) => {
                         const myTemplateData = /* Get my template data based on the resourcePath (see examples below) */
                         return myTemplateData;
                     }
